@@ -577,9 +577,7 @@ bool Network::openSoftAP() {
   // Start of custom modifications
   const char* apSSID = strlen(settings.hostname) > 0 ? settings.hostname : "ESPSomfy RTS";
   const char* apPassword = "ESPSomfyRTS";
-  int channel = 6;
-  int ssid_hidden = 0;
-  WiFi.softAP(apSSID, apPassword, channel, ssid_hidden);
+  WiFi.softAP(apSSID, apPassword);
   // End of custom modifications
   delay(200);
   return true;
