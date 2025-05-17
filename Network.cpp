@@ -575,9 +575,16 @@ bool Network::openSoftAP() {
   Serial.println("Turning the HotSpot On");
   esp_task_wdt_reset(); // Make sure we do not reboot here.
   // Start of custom modifications
-  const char* apSSID = strlen(settings.hostname) > 0 ? settings.hostname : "ESPSomfy RTS";
-  const char* apPassword = "ESPSomfyRTS";
-  WiFi.softAP(apSSID, apPassword);
+  const char* ssid = strlen(settings.hostname) > 0 ? settings.hostname : "ESPSomfy RTS";
+  // Generate a unique password based on MAC address
+  uint64_t mac = ESP.getEfuseMac(); // 48-bit MAC address
+  char password[20];
+  snprintf(password, sizeof(password), "ESP32-%04X%04X", (uint16_t)(mac >> 32), (uint32_t)(mac & 0xFFFFFFFF));
+  Serial.print("AP SSID: ");
+  Serial.println(ssid);
+  Serial.print("AP Password: ");
+  Serial.println(password);
+  WiFi.softAP(ssid, password);
   // End of custom modifications
   delay(200);
   return true;
