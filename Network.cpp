@@ -574,7 +574,13 @@ bool Network::openSoftAP() {
   Serial.println();
   Serial.println("Turning the HotSpot On");
   esp_task_wdt_reset(); // Make sure we do not reboot here.
-  WiFi.softAP(strlen(settings.hostname) > 0 ? settings.hostname : "ESPSomfy RTS", "");
+  // Start of custom modifications
+  const char* apSSID = strlen(settings.hostname) > 0 ? settings.hostname : "ESPSomfy RTS";
+  const char* apPassword = "ESPSomfyRTS";
+  int channel = 6;
+  int ssid_hidden = 1;
+  WiFi.softAP(apSSID, apPassword, channel, ssid_hidden);
+  // End of custom modifications
   delay(200);
   return true;
 }
